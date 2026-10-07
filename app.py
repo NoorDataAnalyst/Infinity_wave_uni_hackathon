@@ -155,13 +155,21 @@ TRANSCRIPT:
 
 def call_llm(prompt, provider, key):
     if provider == "Gemini":
-        model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash-exp")
+        # Use a stable production model name
+        model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+        
+        # Pass API key directly in query parameters
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+        
         r = requests.post(
-            f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-            headers={"x-goog-api-key": key},
+            url,
+            headers={"Content-Type": "application/json"},
             json={
                 "contents": [{"parts": [{"text": prompt}]}],
-                "generationConfig": {"responseMimeType": "application/json", "temperature": 0},
+                "generationConfig": {
+                    "responseMimeType": "application/json",
+                    "temperature": 0
+                },
             },
             timeout=120,
         )
