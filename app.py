@@ -155,7 +155,7 @@ TRANSCRIPT:
 
 def call_llm(prompt, provider, key):
     if provider == "Gemini":
-        model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+        model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash-exp")
         r = requests.post(
             f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
             headers={"x-goog-api-key": key},
